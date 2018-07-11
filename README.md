@@ -1,10 +1,12 @@
-# blind-monk
+# Blind Monk
 A Tool for Data Mock and Check
 
 ## Data Mock
 example
 ```js
-const reqMockData = BPMock.mockData({
+const BlindMonk = require('blind-monk');
+
+const reqMockData = BlindMonk.mockData({
   a1: 'string',
   a2: 'number|0-100.1-4',
   a3: ['string'],
@@ -13,19 +15,11 @@ const reqMockData = BPMock.mockData({
     a51: 'string',
     a52: 'boolean',
   }],
-  a6: [['number', {
-    a61: 'string',
-    a62: 'boolean',
-  }]],
-  a7: {
-    a71: 'string',
-    a72: 'number',
-  },
-  a8: BPMock.define({
+  a8: BlindMonk.define({
     define: 'string',
     required: false,
   }),
-  a9: BPMock.define({
+  a9: BlindMonk.define({
     define: 'string',
     callback: (Mock) => {
       return Mock.Random.cword();
@@ -61,68 +55,7 @@ output
       "a51": "ofnabsll",
       "a52": false
     },
-    {
-      "a51": "oskuuvyjb",
-      "a52": false
-    },
-    {
-      "a51": "krwskcixtq",
-      "a52": true
-    },
-    {
-      "a51": "dvluoum",
-      "a52": true
-    },
-    {
-      "a51": "fwsd",
-      "a52": true
-    },
-    {
-      "a51": "mxs",
-      "a52": true
-    }
   ],
-  "a6": [
-    [
-      591,
-      {
-        "a61": "nanthggnu",
-        "a62": true
-      }
-    ],
-    [
-      695,
-      {
-        "a61": "tlgrzq",
-        "a62": false
-      }
-    ],
-    [
-      816,
-      {
-        "a61": "bwndhtji",
-        "a62": false
-      }
-    ],
-    [
-      501,
-      {
-        "a61": "ndtoekdxv",
-        "a62": false
-      }
-    ],
-    [
-      285,
-      {
-        "a61": "wbiex",
-        "a62": true
-      }
-    ]
-  ],
-  "a7": {
-    "a71": "knewpy",
-    "a72": 958
-  },
   "a8": "gyagbmtbi",
   "a9": "主"
 }
@@ -131,7 +64,9 @@ output
 ## Data Check
 example
 ```js
-BPMock.check({
+const BlindMonk = require('blind-monk');
+
+BlindMonk.check({
   // disabled: true, // 是否对请求参数进行验证
   mock: true, // 是否构造请求参数数据
   params: {
@@ -140,24 +75,12 @@ BPMock.check({
       a2: 'number|0-100',
       a3: ['string', 'number'],
       a4: ['string'],
-      a5: BPMock.define({
+      a5: BlindMonk.define({
         define: {
           a51: 'string',
           a52: 'boolean',
         }
       }),
-      a6: {
-        a61: 'string',
-        a62: 'number',
-      },
-      a7: [{
-        a71: 'string',
-        a72: 'number',
-      }],
-      a8: ['string', {
-        a81: 'string',
-        a82: 'number',
-      }],
     },
   }
 }, {
@@ -170,21 +93,6 @@ BPMock.check({
       a51: 'awesome',
       a52: false,
     },
-    a6: {
-      a61: 'pretty',
-      a62: 22,
-    },
-    a7: [{
-      a71: 'impressive',
-      a72: 72,
-    }, {
-      a71: 'wise',
-      a72: 72,
-    }],
-    a8: ['amazing', {
-      a81: 'humor',
-      a82: 82,
-    }],
   }
 }).then(params => {
   console.log('>>> done', JSON.stringify(params, null, 2));
@@ -219,55 +127,81 @@ output
       "a51": "nygcyr",
       "a52": true
     },
-    "a6": {
-      "a61": "gcijfq",
-      "a62": 666
-    },
-    "a7": [
-      {
-        "a71": "pblkoeod",
-        "a72": 442
-      },
-      {
-        "a71": "leblpxql",
-        "a72": 71
-      },
-      {
-        "a71": "ykwbocy",
-        "a72": 782
-      },
-      {
-        "a71": "bwrmt",
-        "a72": 551
-      },
-      {
-        "a71": "vtpilly",
-        "a72": 114
-      },
-      {
-        "a71": "uttbskiko",
-        "a72": 157
-      },
-      {
-        "a71": "nbdqhql",
-        "a72": 483
-      },
-      {
-        "a71": "iwjhxhhq",
-        "a72": 493
-      },
-      {
-        "a71": "glexvsthho",
-        "a72": 271
-      }
-    ],
-    "a8": [
-      "hhknwp",
-      {
-        "a81": "wmcvwr",
-        "a82": 681
-      }
-    ]
   }
 }
+```
+
+## Doc
+mock template is based on [Mock.js](http://mockjs.com/), but a little difference.
+
+### string
+```js
+BlindMonk.mockData({
+  a1: 'string',
+  // min: min length of string, max: max length of string
+  a2: 'string|min-max',
+  // detail define
+  a3: BlindMonk.define({
+    define: 'string',
+    required: false, // will be ignored if key not exist in data
+  }),
+});
+```
+
+`'string|repeatCount'` is not supported
+
+
+### number
+```js
+BlindMonk.mockData({
+  a1: 'number',
+  // generate a number between [min, max]
+  a2: 'number|min-max',
+  // generate a number between [min, max] and decimal length berween [minbit, maxbit]
+  a3: 'number|min-max.minbit-maxbit',
+  // detail define
+  a4: BlindMonk.define({
+    define: 'number',
+    required: false,
+  }),
+});
+```
+
+`'number|+1'` is not supported
+
+
+### boolean
+```js
+BlindMonk.mockData({
+  a1: 'boolean',
+  // generate a boolean probability is about (min / (min + max))
+  a2: 'boolean|min-max',
+  // detail define
+  a3: BlindMonk.define({
+    define: 'boolean',
+    required: false,
+  }),
+});
+```
+
+### array
+```js
+BlindMonk.mockData({
+  a1: ['string'],
+  a2: ['string', 'number'],
+  a3: ['string', 'number', {
+    a31: 'string',
+    a32: 'boolean',
+  }],
+});
+```
+
+### object
+```js
+BlindMonk.mockData({
+  a1: {
+    a11: 'string',
+    a12: ['string', 'number'],
+  },
+});
 ```
