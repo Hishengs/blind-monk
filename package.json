@@ -4,7 +4,8 @@
   "description": "A Tool for Data Mock and Check",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test/mock.js"
+    "test-mock": "mocha test/mock.js",
+    "test-check": "mocha test/check.js"
   },
   "author": "Hisheng",
   "license": "MIT",
