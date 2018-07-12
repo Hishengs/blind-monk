@@ -34,7 +34,7 @@ BlindMonk.mockData('boolean');
 
 // 随机构造一个随机长度的字符串数组
 BlindMonk.mockData(['string']);
-// 随机构造一个随机长度的数组，第一个是字符串，第二个是数字
+// 随机构造一个数组，第一个是字符串，第二个是数字
 BlindMonk.mockData(['string', 'number']);
 // 随机构造一个随机长度的对象数组
 BlindMonk.mockData([{
