@@ -1,6 +1,6 @@
-const BPMock = require('../index.js');
+const BlindMonk = require('../index.js');
 
-const reqMockData = BPMock.mockData({
+const reqMockData = BlindMonk.mockData({
   a1: 'string',
   a2: 'number|0-100.1-4',
   a3: ['string'],
@@ -17,11 +17,11 @@ const reqMockData = BPMock.mockData({
     a71: 'string',
     a72: 'number',
   },
-  a8: BPMock.define({
+  a8: BlindMonk.define({
     define: 'string',
     required: false,
   }),
-  a9: BPMock.define({
+  a9: BlindMonk.define({
     define: 'string',
     callback: (Mock) => {
       return Mock.Random.cword();
@@ -30,4 +30,4 @@ const reqMockData = BPMock.mockData({
 });
 
 console.log(JSON.stringify(reqMockData, null, 2));
-// console.log(BPMock.mockData('number|-100-100'));
+// console.log(BlindMonk.mockData('number|-100-100'));

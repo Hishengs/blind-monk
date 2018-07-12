@@ -1,9 +1,9 @@
-const BPMock = require('../index.js');
+const BlindMonk = require('../index.js');
 
-BPMock.config.check.mock = true;
-BPMock.config.check.disabled = true;
+BlindMonk.config.check.mock = true;
+BlindMonk.config.check.disabled = true;
 
-BPMock.check({
+BlindMonk.check({
   // disabled: true, // 是否对请求参数进行验证
   // mock: true, // 是否构造请求参数数据
   params: {
@@ -12,7 +12,7 @@ BPMock.check({
       a2: 'number|0-100',
       a3: ['string', 'number'],
       a4: ['string'],
-      a5: BPMock.define({
+      a5: BlindMonk.define({
         define: {
           a51: 'string',
           a52: 'boolean',
